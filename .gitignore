@@ -1,0 +1,28 @@
+# 忽略系统与临时文件
+.DS_Store
+Thumbs.db
+desktop.ini
+*.tmp
+*~
+._*
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# 日志 / 大文件 / 敏感信息
+*.log
+*.pcap
+.env
+credentials*
+*.key
+*.pem
+
+# 实验原始数据与本地生成物（按需提交到仓库时可手动 add）
+data/raw/large/
+data/processed/large/
+
+# 本地编辑备份
+*.docx.bak

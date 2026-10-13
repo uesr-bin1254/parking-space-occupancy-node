@@ -6,12 +6,13 @@
 
 ## 技术方案（统一口径）
 
-地磁 + 超声波双传感器融合 → ESP32 边缘处理 → MQTT/Wi-Fi → SQLite 存储 → Web Dashboard。
-全程**不识别车辆身份**（隐私友好），规避摄像头方案的隐私与合规问题。
+摄像头 **YOLO 视觉占用检测（配置为不识别车辆身份）** → **STM32 主控**（外接 Wi-Fi 模块）→ MQTT/Wi-Fi → SQLite 存储 → Web Dashboard。
+地磁 + 超声波双传感器作为低成本互补校验。
+全程**不识别车辆身份**（隐私友好），规避摄像头/车牌采集的隐私与合规问题。
 
 - 成员分工：A 协调与文档 / B 硬件与传感 / C 软件与数据 / D 测试与验证
 - 需求基线：R01–R06（详见 `weekly_reports/W03_需求规格.docx` 与需求文档）
-- 接口：I01 地磁→MCU（I2C，100ms）；I02 超声波→MCU（200ms）；I03 MCU→MQTT→SQLite/Dashboard
+- 接口：I01 地磁→MCU（I2C，100ms，校验）；I02 超声波→MCU（200ms，校验）；I03 MCU→MQTT→SQLite/Dashboard；I04 摄像头YOLO→MCU（占用/空闲，不识别身份）
 - 当前进度：**第 8 周**（中期工程评审 G5）
 
 ## 目录结构

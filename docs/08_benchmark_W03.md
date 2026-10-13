@@ -14,16 +14,17 @@
 - **缺点**：涉及**车辆身份/隐私**采集，合规与隐私风险高；依赖部署位、光照、遮挡；算力需求较高。
 - **来源**：中国联通全视频车位引导系统 https://gec.10010.com/p/solution/1892 ；Ultralytics YOLO 停车管理 https://docs.ultralytics.com/guides/parking-management
 
-## 做法 3：传感器方案（本项目基线）
+## 做法 3：传感器方案（本项目互补校验）
 - **地磁检测**：车辆金属使局部磁场畸变，判断占用；设环境磁场阈值，空闲变化小、停车变化大；灵敏度可配置（来源：Global Hi-Tech https://globalhi-tech.sg/wireless-parking-guidance-system/ ；上海门漾）。
 - **超声波检测**：车位正上方探测，实时采集车辆信息，指示灯绿/红（来源：西安建筑科技大学）。
 - **双模（地磁＋超声波/雷达）**：户外全天气高精度，双模检测精度可达约99%（来源：ChinaIoTDevices https://www.chinaiotdevices.com/iotdevices/ultrasonic-and-geomagnetic-parking-occupation-detector-with-lorawan/ ；ZOJE https://www.zoje-parking.com/knowledge/wireless-dual-mode-geomagnetic-parking-detector-for-easy-installation）。
-- **优点**：隐私友好、低功耗、可单车位部署、成本低；**缺点**：单一传感器易受环境干扰（地磁漂移、超声波遮挡），故本项目采用**双传感融合**。
+- **优点**：隐私友好、低功耗、可单车位部署、成本低；**缺点**：单一传感器易受环境干扰（地磁漂移、超声波遮挡），故作为本项目**互补校验**。
 
-## 候选路线：YOLO 视觉（待评估）
+## 主路线：YOLO 视觉占用检测（已确定）
 - 基于视频流用 YOLO 检测"car"类目标，并按车位区域（IoU/最近车位匹配）判断占用/空闲（来源：arXiv、ScholaRepos、AUA）。
-- 优点：可多车位、可配置**不识别身份**；缺点：算力需求高、依赖摄像头与部署位。
+- 优点：覆盖直观、可多车位、可配置**不识别身份**；缺点：算力需求高、依赖摄像头与部署位/光照。
 - 来源：Ultralytics https://docs.ultralytics.com/guides/parking-management ；arXiv 基于 YOLOv11 的边缘停车架构 https://arxiv.org/html/2602.01754v1
 
 ## 结论
-- 结合隐私、成本、部署与校园场景，本项目以**地磁＋超声波＋ESP32＋MQTT**为基线；**YOLO＋STM32** 作为候选技术路线待评估（未定稿）。
+- 结合隐私、成本、部署与校园场景，本项目**最终采用 YOLO 视觉占用检测（配置为不识别车辆身份）＋STM32 主控**，经 Wi-Fi 模块接入 MQTT → SQLite → Web Dashboard；地磁/超声波作为低成本互补校验。
+- 变更经团队＋教师评审确认，记入 Change Log（CH03）。
